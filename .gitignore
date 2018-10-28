@@ -9,6 +9,8 @@
 # virtual machine crach logs
 hs_err_pid*
 
+vcs.xml
+
 *.iml
 .idea/*
 target/*
