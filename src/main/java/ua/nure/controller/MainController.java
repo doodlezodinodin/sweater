@@ -3,6 +3,7 @@ package ua.nure.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ua.nure.dao.MessageDao;
 import ua.nure.entity.Message;
@@ -26,9 +27,17 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(Map<String, Object> model) {
-        Iterable<Message> allMessages = messageDao.findAll();
-        model.put("messages", allMessages);
+    public String main(@RequestParam(required = false, defaultValue = "") String tag, Model model) {
+        Iterable<Message> messages = messageDao.findAll();
+
+        if (tag != null && !tag.isEmpty()) {
+            messages = messageDao.findByTag(tag);
+        } else {
+            messages = messageDao.findAll();
+        }
+
+        model.addAttribute("messages", messages);
+        model.addAttribute("tag", tag);
         return "main";
     }
 
@@ -44,20 +53,6 @@ public class MainController {
         Iterable<Message> allMessages = messageDao.findAll();
         model.put("messages", allMessages);
 
-        return "main";
-    }
-
-    @PostMapping("/filterByTag")
-    public String filterByTag(@RequestParam String tag, Map<String, Object> model) {
-        Iterable<Message> messages;
-
-        if (tag != null && !tag.isEmpty()) {
-            messages = messageDao.findByTag(tag);
-        } else {
-            messages = messageDao.findAll();
-        }
-
-        model.put("messages", messages);
         return "main";
     }
 }
