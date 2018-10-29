@@ -9,12 +9,12 @@ import ua.nure.entity.Message;
 import java.util.Map;
 
 @Controller
-public class GreetingController {
+public class MainController {
 
     private final MessageDao messageDao;
 
     @Autowired
-    private GreetingController(MessageDao messageDao) {
+    private MainController(MessageDao messageDao) {
         this.messageDao = messageDao;
     }
 
