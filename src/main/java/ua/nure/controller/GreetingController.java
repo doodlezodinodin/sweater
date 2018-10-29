@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ua.nure.dao.MessageDao;
 import ua.nure.entity.Message;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -19,13 +18,12 @@ public class GreetingController {
         this.messageDao = messageDao;
     }
 
-    @RequestMapping(value = "/greeting", method = RequestMethod.GET) //слушает
-    public String greeting(@RequestParam(name = "name", required = false, defaultValue = "Default World") String name, Map<String, Object> model) {
-        model.put("name", name);
-        return "greeting.mustache"; //возвращает
+    @RequestMapping(value = "/", method = RequestMethod.GET) //слушает
+    public String greeting(Map<String, Object> model) {
+        return "greeting"; //возвращает
     }
 
-    @GetMapping()
+    @GetMapping("/main")
     public String main(Map<String, Object> model) {
         Iterable<Message> allMessages = messageDao.findAll();
         model.put("messages", allMessages);
