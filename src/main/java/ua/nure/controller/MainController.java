@@ -27,31 +27,32 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(@RequestParam(required = false, defaultValue = "") String tag, Model model) {
+    public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
         Iterable<Message> messages = messageDao.findAll();
 
-        if (tag != null && !tag.isEmpty()) {
-            messages = messageDao.findByTag(tag);
+        if (filter != null && !filter.isEmpty()) {
+            messages = messageDao.findByTag(filter);
         } else {
             messages = messageDao.findAll();
         }
 
         model.addAttribute("messages", messages);
-        model.addAttribute("tag", tag);
+        model.addAttribute("filter", filter);
         return "main";
     }
 
-    @PostMapping("/addMessage")
+    @PostMapping("/main")
     public String addMessage(
             @AuthenticationPrincipal User user,
             @RequestParam String text,
-            @RequestParam String tag, Map<String, Object> model
+            @RequestParam String tag,
+            Model model
     ) {
         Message message = new Message(text, tag, user);
         messageDao.save(message);
 
         Iterable<Message> allMessages = messageDao.findAll();
-        model.put("messages", allMessages);
+        model.addAttribute( "messages", allMessages);
 
         return "main";
     }

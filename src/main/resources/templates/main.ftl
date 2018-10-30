@@ -5,25 +5,25 @@
 
 <div>
     <@logout.logout/>
+    <span><a href="/user">Список пользователей</a></span>
 </div>
 
 <div>
-    <form action="addMessage" method="post">
+    <form method="post">
         <input type="text" name="text" placeholder="Введите сообщение"/>
         <input type="text" name="tag" placeholder="Тэг"/>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <input type="submit" text="Отправить"/>
-    </form>
-</div>
-
-<div>
-    <form action="/main" method="get">
-        <input type="text" name="tag" placeholder="Тэг" value="${tag}"/>
-        <input type="submit" text="Найти"/>
+        <input type="submit" value="Отправить"/>
     </form>
 </div>
 
 <p>Список сообщений</p>
+<div>
+    <form action="/main" method="get">
+        <input type="text" name="filter" placeholder="Тэг" value="${filter!""}"/>
+        <input type="submit" value="Найти"/>
+    </form>
+</div>
 <#list messages as message>
 <div>
     <b>${message.id}</b>
