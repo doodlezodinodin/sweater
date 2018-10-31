@@ -2,13 +2,9 @@
 <#import "parts/login.ftl" as l>
 
 <@c.page>
-Registration page
+<p>Registration page</p>
 
-<#--{{#message}}-->
-    <#--{{message}}-->
-<#--{{/message}}-->
-
-<#--${message}-->
+<p>${message?ifExists}</p>
 
 <@l.login "/registration"/>
 
