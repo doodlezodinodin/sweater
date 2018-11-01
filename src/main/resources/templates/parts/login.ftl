@@ -6,6 +6,14 @@
                 <input type="text" name="username" class="form-control" placeholder="Username"/>
             </div>
         </div>
+        <#if isRegisterForm>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-5">
+                <input type="email" name="email" class="form-control" placeholder="email@some.ua"/>
+            </div>
+        </div>
+        </#if>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Пароль</label>
             <div class="col-sm-5">

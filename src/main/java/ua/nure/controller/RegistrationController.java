@@ -2,20 +2,20 @@ package ua.nure.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import ua.nure.dao.UserDao;
-import ua.nure.entity.Role;
 import ua.nure.entity.User;
+import ua.nure.service.UserService;
 
-import java.util.Collections;
 import java.util.Map;
 
 @Controller
 public class RegistrationController {
 
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
 
     @GetMapping("/registration")
     public String registration() {
@@ -24,18 +24,24 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(User user, Map<String, Object> model) {
-
-        User userFromDb = userDao.findByUsername(user.getUsername());
-
-        if (userFromDb != null) {
-            model.put("message", "User exists.");
+        if (!userService.addUser(user)) {
+            model.put("message", "Пользователь с таким именем уже существует.");
             return "registration";
         }
 
-        user.setActive(true);
-        user.setRoles(Collections.singleton(Role.USER));
-        userDao.save(user);
-
         return "redirect:/login";
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activate(Model model, @PathVariable String code) {
+        boolean isActivated = userService.activateUser(code);
+
+        if (isActivated) {
+            model.addAttribute("message", "User successfully activated");
+        } else {
+            model.addAttribute("message", "Activation code is not found!");
+        }
+
+        return "login";
     }
 }

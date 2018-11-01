@@ -6,4 +6,6 @@ import ua.nure.entity.User;
 public interface UserDao extends JpaRepository<User, Long> {
 
     User findByUsername(String username);
+
+    User findByActivationCode(String code);
 }
